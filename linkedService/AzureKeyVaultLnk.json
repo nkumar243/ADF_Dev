@@ -1,0 +1,11 @@
+{
+	"name": "AzureKeyVaultLnk",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://keyvaultformula1car.vault.azure.net/"
+		}
+	}
+}

@@ -1,0 +1,139 @@
+{
+	"name": "dataflow2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "reportingDataset",
+						"type": "DatasetReference"
+					},
+					"name": "csvsource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "MailCountByOrganization",
+						"type": "DatasetReference"
+					},
+					"name": "toReporting"
+				}
+			],
+			"transformations": [
+				{
+					"name": "selectCols"
+				},
+				{
+					"name": "runwayselection"
+				},
+				{
+					"name": "Splitonreadstatus"
+				},
+				{
+					"name": "aggregateRead"
+				},
+				{
+					"name": "aggregateUnread"
+				},
+				{
+					"name": "joinWithunread"
+				},
+				{
+					"name": "select"
+				},
+				{
+					"name": "performupsert"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          contactgroupid as string,",
+				"          contactgroupname as string,",
+				"          emailtemplateid as string,",
+				"          emailtemplatename as string,",
+				"          sourcetype as string,",
+				"          sesmessageid as string,",
+				"          contactid as string,",
+				"          deliverydate as date,",
+				"          emaildeliveryid as string,",
+				"          organizationid as string,",
+				"          readstatus as string,",
+				"          deliverydatetime as string,",
+				"          fromemailid as string,",
+				"          opendatetime as string,",
+				"          runway as string,",
+				"          selectioncriteria as string,",
+				"          deliverystatus as string,",
+				"          contactemail as string,",
+				"          sourcetypeid as boolean,",
+				"          fromemail as string,",
+				"          deliverymonth as string,",
+				"          action_key as string,",
+				"          ActionAmount as short,",
+				"          ActionID as string,",
+				"          ActionName as string,",
+				"          ActionPage as boolean,",
+				"          CampaignID as string,",
+				"          ActionOutcome as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> csvsource",
+				"csvsource select(mapColumn(",
+				"          contactgroupid,",
+				"          sourcetype,",
+				"          deliverydate,",
+				"          emaildeliveryid,",
+				"          organizationid,",
+				"          readstatus,",
+				"          deliverydatetime,",
+				"          fromemailid,",
+				"          opendatetime,",
+				"          runway,",
+				"          selectioncriteria,",
+				"          deliverystatus,",
+				"          contactemail,",
+				"          sourcetypeid,",
+				"          deliverymonth,",
+				"          ActionAmount,",
+				"          ActionID,",
+				"          ActionName,",
+				"          ActionPage,",
+				"          CampaignID,",
+				"          ActionOutcome",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectCols",
+				"selectCols filter(runway == 'dev') ~> runwayselection",
+				"runwayselection split(readstatus == 'read',",
+				"     disjoint: false) ~> Splitonreadstatus@(read, unread)",
+				"Splitonreadstatus@read aggregate(groupBy(organizationid),",
+				"     ReadMailCount = count(readstatus)) ~> aggregateRead",
+				"Splitonreadstatus@unread aggregate(groupBy(organizationid),",
+				"     unreadMailsCount = count(readstatus)) ~> aggregateUnread",
+				"aggregateRead, aggregateUnread join(aggregateRead@organizationid == aggregateUnread@organizationid,",
+				"     joinType:'outer',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinWithunread",
+				"joinWithunread select(mapColumn(",
+				"          organizationid = aggregateRead@organizationid,",
+				"          ReadMailCount,",
+				"          unreadMails = unreadMailsCount",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select",
+				"select alterRow(insertIf(true())) ~> performupsert",
+				"performupsert sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> toReporting"
+			]
+		}
+	}
+}

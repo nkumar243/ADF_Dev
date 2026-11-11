@@ -1,0 +1,21 @@
+{
+	"name": "OnpremSqlServer",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "NK-OFFICE\\MSSQLSERVER01",
+			"database": "NK",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "Windows",
+			"userName": "NK-OFFICE\\Naveen",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI4ZjM5YzA5NC0zNTliLTRhYjQtODE0MS1hZWE1ZTA2ZTQ4MjUiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "OnPremintegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

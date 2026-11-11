@@ -1,0 +1,64 @@
+{
+	"name": "DS_ottingest_param",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ottadls001",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"fileName_source": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().fileName_source",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Title",
+				"type": "String"
+			},
+			{
+				"name": "Genre",
+				"type": "String"
+			},
+			{
+				"name": "ReleaseDate",
+				"type": "String"
+			},
+			{
+				"name": "Runtime",
+				"type": "String"
+			},
+			{
+				"name": "IMDB Score",
+				"type": "String"
+			},
+			{
+				"name": "Language",
+				"type": "String"
+			},
+			{
+				"name": "Views",
+				"type": "String"
+			},
+			{
+				"name": "AddedDate",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

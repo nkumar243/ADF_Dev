@@ -1,0 +1,33 @@
+{
+	"name": "crmfilestoreporting",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CSVAzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"p_reportingfile": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().p_reportingfile",
+					"type": "Expression"
+				},
+				"folderPath": "crmfiles",
+				"fileSystem": "reportingcontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

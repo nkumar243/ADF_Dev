@@ -1,0 +1,24 @@
+{
+	"name": "CRMStorageEventTrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "testStorageEventTrigger",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/containerforcsv/blobs/crmfiles/CRMEmailDelivery.csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/c040fa6d-028f-4fe9-aa61-2583777a0998/resourceGroups/ADFTry/providers/Microsoft.Storage/storageAccounts/csvsourcestorageaccnt",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}

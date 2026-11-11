@@ -1,0 +1,33 @@
+{
+	"name": "DS_ottdestination_param",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ottadls001",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileName_dest": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().FileName_dest",
+					"type": "Expression"
+				},
+				"folderPath": "ingest",
+				"fileSystem": "ottdestinationcontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

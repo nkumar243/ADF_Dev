@@ -1,0 +1,13 @@
+{
+	"name": "LS_Synapse_ott",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSynapseArtifacts",
+		"typeProperties": {
+			"endpoint": "https://projectworksynapse.dev.azuresynapse.net",
+			"authentication": "MSI",
+			"workspaceResourceId": "/subscriptions/c040fa6d-028f-4fe9-aa61-2583777a0998/resourceGroups/SnyapseResource/providers/Microsoft.Synapse/workspaces/projectworksynapse"
+		}
+	}
+}
